@@ -4,9 +4,8 @@ import DropMenu from "./DropMenu";
 
 const NavMenu: React.FC = () => {
   const [isOpen, setisOpen] = useState<boolean>(false);
-  console.log(isOpen);
+
   const menuRef = useRef<HTMLDivElement>(null);
-  console.log(menuRef);
 
   const toggleMenu = () => {
     setisOpen((prevState) => !prevState);

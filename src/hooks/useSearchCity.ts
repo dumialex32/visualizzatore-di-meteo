@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { cityAutoCompleteApi } from "../api/cityAutocompleteApi";
-import { getCityWeatherApi } from "../api/cityWeatherApi";
+
 import { Suggestions } from "../types/suggestionsTypes";
-import { WeatherDataDispatch } from "../types/weatherDataTypes";
 
 const useSearchCity = () => {
   const navigate = useNavigate();
@@ -13,6 +12,8 @@ const useSearchCity = () => {
   >([]);
   const [suggestions, setSuggestions] = useState<Suggestions[]>([]);
   const [error, setError] = useState<string>("");
+
+  const [lat, lon] = selectedCityCoords;
 
   const searchCity = useCallback(async () => {
     if (selectedCityCoords.length > 0) return;
@@ -33,21 +34,17 @@ const useSearchCity = () => {
     setSelectedCityCoords(coords);
   };
 
-  const handleSubmit = async (
-    e: React.FormEvent,
-    onSetWeatherData: WeatherDataDispatch
-  ) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setCity("");
-    if (selectedCityCoords.length === 0) return;
 
-    try {
-      const data = await getCityWeatherApi(selectedCityCoords);
-      onSetWeatherData(data);
-      navigate("/city-temp");
-    } catch (err) {
-      setError(err as string);
+    if (!lat || !lon) {
+      console.error("Latitude or Longitude is undefined");
+      return;
     }
+
+    navigate(`/meteo/${lat}/${lon}`);
+    setCity("");
+    setSelectedCityCoords([]);
   };
 
   useEffect(() => {

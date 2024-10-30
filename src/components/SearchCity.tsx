@@ -1,18 +1,15 @@
 import SearchIcon from "@mui/icons-material/Search";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
-import { WeatherDataDispatch } from "../types/weatherDataTypes";
 import useSearchCity from "../hooks/useSearchCity";
 
-const SearchCity: React.FC<{
-  onSetWeatherData: WeatherDataDispatch;
-}> = ({ onSetWeatherData }) => {
-  const { handleSubmit, city, setCity, suggestions, handleSelectedCity } =
+const SearchCity: React.FC = () => {
+  const { city, suggestions, handleSelectedCity, handleSubmit, setCity } =
     useSearchCity();
 
   return (
     <form
       className="grid grid-cols-[3rem_1fr_3rem] px-4 py-2 max-w-96 rounded-md items-center border"
-      onSubmit={(e) => handleSubmit(e, onSetWeatherData)}
+      onSubmit={handleSubmit}
     >
       <div className="text-main-color border-r">
         <ThermostatIcon />

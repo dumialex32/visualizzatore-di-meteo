@@ -3,9 +3,7 @@ import Logo from "./Logo";
 import NavMenu from "./NavMenu";
 import SearchCity from "./SearchCity";
 
-const MainNav: React.FC<{ onSetWeatherData: (data: any) => void }> = ({
-  onSetWeatherData,
-}) => {
+const MainNav: React.FC = () => {
   return (
     <nav className="flex items-center justify-between bg-orange-50 px-8 py-2">
       <Link to="/">
@@ -13,7 +11,7 @@ const MainNav: React.FC<{ onSetWeatherData: (data: any) => void }> = ({
       </Link>
 
       <div className="flex-1 flex justify-center">
-        <SearchCity onSetWeatherData={onSetWeatherData} />
+        <SearchCity />
       </div>
 
       <NavMenu />

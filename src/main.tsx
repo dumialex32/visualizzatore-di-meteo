@@ -14,7 +14,7 @@ import CityWeatherScreen from "./components/screens/CityWeatherScreen.tsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="/city-temp" element={<CityWeatherScreen />} />
+      <Route path="/meteo/:lat/:lon" element={<CityWeatherScreen />} />
       <Route path="/fav-cities" element={<FavCittiesWeatherScreen />} />
     </Route>
   )

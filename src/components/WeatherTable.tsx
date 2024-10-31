@@ -2,7 +2,7 @@ import { useState } from "react";
 import { WeatherData } from "../types/weatherDataTypes";
 import DailyTab from "./DailyTab";
 import HourlyWeatherDataRow from "./HourlyWeatherDataRow";
-import { WeatherCodeInterpretation } from "../types/weatherCodeInterpretationTypes";
+import { WeatherCodeInterpretation } from "../types/weatherDataTypes";
 import weatherCodeInterpretationData from "../data/weatherCodeInterpretation.json";
 
 const timeMap: Record<number, "day" | "night"> = {
@@ -25,7 +25,7 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
   weatherData,
 }) => {
   const [activeTab, setActiveTab] = useState<number>(0);
-  console.log(activeTab);
+
   const units = {
     humidityUnit: weatherData?.hourly_units.relative_humidity_2m,
     tempUnit: weatherData?.hourly_units.temperature_2m,
@@ -65,9 +65,11 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
       .filter((d) => d.time.startsWith(currentTabDate));
   };
 
+  const tabHourlyData = getTabHourlyData();
+
   return (
     <div>
-      {/* le collone della tabella */}
+      {/* le schede della tabella giornaliera */}
       <ul className="grid grid-cols-7 gap-2">
         {weatherData?.daily.time.map((date, i) => {
           return (
@@ -80,8 +82,7 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
           );
         })}
       </ul>
-
-      {/* corpo della tabella */}
+      {/* le collone della tabella */}
       <div className="flex flex-col gap-4 p-4">
         <div className="grid grid-cols-5 shadow-md p-2">
           {columns.map((c) => (
@@ -91,9 +92,12 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
           ))}
         </div>
 
-        {getTabHourlyData().map((d, i) => {
-          return <HourlyWeatherDataRow key={i} hourlyWeatherData={d} />;
-        })}
+        {/* corpo della tabella */}
+        <div className="border rounded-md">
+          {tabHourlyData.map((d, i) => {
+            return <HourlyWeatherDataRow key={i} tabHourlyData={d} />;
+          })}
+        </div>
       </div>
     </div>
   );

@@ -37,3 +37,30 @@ interface DailyUnits {
 interface DailyData {
   time: string[];
 }
+
+// tab hourly data
+export interface TabHourlyData {
+  time: string;
+  temperature: number;
+  description: DayNightDescription;
+  humidity: number;
+  windSpeed: number;
+  units: {
+    humidityUnit: string;
+    tempUnit: string;
+    windUnit: string;
+  };
+}
+
+// weatuerCodeInterpretation
+interface DayNightDescription {
+  description: string;
+  image: string;
+}
+
+interface WeatherDescriptionEntry {
+  day: DayNightDescription;
+  night: DayNightDescription;
+}
+
+export type WeatherCodeInterpretation = Record<number, WeatherDescriptionEntry>;

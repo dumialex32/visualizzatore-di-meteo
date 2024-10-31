@@ -12,7 +12,7 @@ const useSearchCity = () => {
   >([]);
   const [suggestions, setSuggestions] = useState<Suggestions[]>([]);
   const [error, setError] = useState<string>("");
-
+  console.log(suggestions);
   const [lat, lon] = selectedCityCoords;
 
   const searchCity = useCallback(async () => {
@@ -29,6 +29,7 @@ const useSearchCity = () => {
     selectedCity: string,
     coords: [lat: string, lng: string]
   ) => {
+    console.log(selectedCity);
     setCity(selectedCity);
     setSuggestions([]);
     setSelectedCityCoords(coords);
@@ -42,7 +43,7 @@ const useSearchCity = () => {
       return;
     }
 
-    navigate(`/meteo/${lat}/${lon}`);
+    navigate(`/meteo/${lat}/${lon}`, { state: city });
     setCity("");
     setSelectedCityCoords([]);
   };

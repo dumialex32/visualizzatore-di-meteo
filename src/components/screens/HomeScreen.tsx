@@ -3,7 +3,7 @@ import hpLogo from "../../assets/hp-logo.png";
 const HomeScreen: React.FC = () => {
   return (
     <div className="flex justify-center h-screen">
-      <div className="grid grid-cols-2 gap-14 max-h-96 shadow-md p-4">
+      <div className="grid grid-cols-2 gap-14 max-h-96 shadow-md p-8">
         <div className="flex flex-col gap-6 max-w-96">
           <h1 className="text-4xl font-bold">
             Benvenuto nell'app <span className="text-main-color">VizMeteo</span>

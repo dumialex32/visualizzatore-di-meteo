@@ -1,26 +1,30 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Loader from "../Loader";
 import WeatherTable from "../WeatherTable";
 import useWeather from "../../hooks/useWeather";
+import AlertType from "../AlertType";
 
 const CityWeatherScreen: React.FC = () => {
+  const location = useLocation();
   const params = useParams();
   const lat = params.lat || "";
   const lon = params.lon || "";
+
+  const cityName = location.state;
 
   const { weatherData, isLoading, error } = useWeather(lat, lon);
 
   console.log(weatherData);
 
-  if (!weatherData) return <div>ERROR</div>; // TO DO
-
   return (
     <div>
-      {/* to do nome cita dinamico */}
-      <h2 className="text-3xl p-2 mb-5">Meteo citta_placeholder</h2>
-      {isLoading && <Loader />}
+      {isLoading && !error && <Loader />}
+      {error && !isLoading && <AlertType type="error" message="Error" />}
 
-      {/* to do error component*/}
+      <h2 className="text-2xl p-2 mb-5 uppercase">
+        Meteo {cityName} - Previsioni per 7 giorni
+      </h2>
+
       <WeatherTable weatherData={weatherData} />
     </div>
   );

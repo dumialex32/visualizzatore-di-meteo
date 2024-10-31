@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const DropMenu: React.FC = () => {
   return (
-    <div className="absolute p-2 bg-white rounded-md shadow-md">
+    <div className="absolute right-0 p-2 bg-white rounded-md shadow-md">
       <ul className="flex flex-col gap-2 text-sm w-28">
         <NavLink
           className={({ isActive }) =>

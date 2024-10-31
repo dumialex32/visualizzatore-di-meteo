@@ -28,9 +28,7 @@ const SearchCity: React.FC = () => {
               <div
                 key={i}
                 className="px-2 py-1 hover:bg-gray-200 cursor-pointer"
-                onClick={() =>
-                  handleSelectedCity(s.display_name, [s.lat, s.lon])
-                }
+                onClick={() => handleSelectedCity(s.name, [s.lat, s.lon])}
               >
                 {s.display_name}
               </div>

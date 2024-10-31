@@ -6,6 +6,7 @@ export default {
       colors: {
         "main-color": "#F97316",
       },
+      backgroundImage: {},
     },
   },
   plugins: [],

@@ -6,10 +6,10 @@ export const getCityWeatherApi = async (lat: string, lon: string) => {
   const longitude = Number(lon);
 
   try {
-    console.log(lat, lon);
     const res = await axios.get<WeatherData>(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,is_day&daily`
     );
+
     return res.data;
   } catch (err) {
     if (isAxiosError(err)) {

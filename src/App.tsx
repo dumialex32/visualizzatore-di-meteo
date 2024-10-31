@@ -3,7 +3,7 @@ import MainNav from "./components/MainNav";
 
 function App() {
   return (
-    <div className="container mx-auto shadow-md h-screen my-8">
+    <div className="container mx-auto border-x h-full">
       <MainNav />
 
       <main className="p-8">

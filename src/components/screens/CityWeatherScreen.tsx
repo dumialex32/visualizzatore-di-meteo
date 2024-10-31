@@ -1,35 +1,29 @@
-import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getCityWeatherApi } from "../../api/cityWeatherApi";
-import { WeatherData } from "../../types/weatherDataTypes";
+import Loader from "../Loader";
+import WeatherTable from "../WeatherTable";
+import useWeather from "../../hooks/useWeather";
 
 const CityWeatherScreen: React.FC = () => {
   const params = useParams();
-  const { lat, lon } = params;
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-  const [error, setError] = useState<string>("");
+  const lat = params.lat || "";
+  const lon = params.lon || "";
+
+  const { weatherData, isLoading, error } = useWeather(lat, lon);
+
   console.log(weatherData);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const getWeather = useCallback(async () => {
-    if (!lat || !lon) throw new Error("Coords not provided");
+  if (!weatherData) return <div>ERROR</div>; // TO DO
 
-    try {
-      setIsLoading(true);
-      const data = await getCityWeatherApi(lat, lon);
-      setWeatherData(data);
-    } catch (err: any) {
-      setError(err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [lat, lon]);
+  return (
+    <div>
+      {/* to do nome cita dinamico */}
+      <h2 className="text-3xl p-2 mb-5">Meteo citta_placeholder</h2>
+      {isLoading && <Loader />}
 
-  useEffect(() => {
-    getWeather();
-  }, [getWeather]);
-
-  return <div>city screen</div>;
+      {/* to do error component*/}
+      <WeatherTable weatherData={weatherData} />
+    </div>
+  );
 };
 
 export default CityWeatherScreen;

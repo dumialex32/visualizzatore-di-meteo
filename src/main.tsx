@@ -10,10 +10,12 @@ import {
 } from "react-router-dom";
 import FavCittiesWeatherScreen from "./components/screens/FavCittiesWeatherScreen.tsx";
 import CityWeatherScreen from "./components/screens/CityWeatherScreen.tsx";
+import HomeScreen from "./components/screens/HomeScreen.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      <Route index={true} element={<HomeScreen />} />
       <Route path="/meteo/:lat/:lon" element={<CityWeatherScreen />} />
       <Route path="/fav-cities" element={<FavCittiesWeatherScreen />} />
     </Route>

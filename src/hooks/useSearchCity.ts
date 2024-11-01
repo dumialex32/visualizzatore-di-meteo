@@ -1,4 +1,10 @@
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import React, {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { cityAutoCompleteApi } from "../api/cityAutocompleteApi";
 
@@ -6,14 +12,22 @@ import { Suggestions } from "../types/suggestionsTypes";
 
 const useSearchCity = () => {
   const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [city, setCity] = useState<string>("");
   const [selectedCityCoords, setSelectedCityCoords] = useState<
     [lat: string, lon: string] | []
   >([]);
   const [suggestions, setSuggestions] = useState<Suggestions[]>([]);
   const [error, setError] = useState<string>("");
-  console.log(suggestions);
   const [lat, lon] = selectedCityCoords;
+
+  console.log(suggestions);
+  console.log(city);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCity(e.target.value);
+    setSelectedCityCoords([]);
+  };
 
   const searchCity = useCallback(async () => {
     if (selectedCityCoords.length > 0) return;
@@ -29,10 +43,10 @@ const useSearchCity = () => {
     selectedCity: string,
     coords: [lat: string, lng: string]
   ) => {
-    console.log(selectedCity);
     setCity(selectedCity);
     setSuggestions([]);
     setSelectedCityCoords(coords);
+    inputRef.current?.focus();
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -43,9 +57,10 @@ const useSearchCity = () => {
       return;
     }
 
-    navigate(`/meteo/${lat}/${lon}`, { state: city });
+    navigate(`/meteo/${city}`, { state: selectedCityCoords });
     setCity("");
     setSelectedCityCoords([]);
+    inputRef.current?.blur();
   };
 
   useEffect(() => {
@@ -56,7 +71,15 @@ const useSearchCity = () => {
     return () => clearTimeout(debounceTimeout);
   }, [city, searchCity]);
 
-  return { handleSubmit, city, setCity, suggestions, handleSelectedCity };
+  return {
+    city,
+    inputRef,
+    suggestions,
+    error,
+    handleSubmit,
+    handleSelectedCity,
+    handleInputChange,
+  };
 };
 
 export default useSearchCity;

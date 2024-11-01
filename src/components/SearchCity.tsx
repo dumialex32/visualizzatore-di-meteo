@@ -3,8 +3,15 @@ import ThermostatIcon from "@mui/icons-material/Thermostat";
 import useSearchCity from "../hooks/useSearchCity";
 
 const SearchCity: React.FC = () => {
-  const { city, suggestions, handleSelectedCity, handleSubmit, setCity } =
-    useSearchCity();
+  const {
+    city,
+    suggestions,
+    inputRef,
+    error,
+    handleSelectedCity,
+    handleSubmit,
+    handleInputChange,
+  } = useSearchCity();
 
   return (
     <form
@@ -20,7 +27,8 @@ const SearchCity: React.FC = () => {
           type="text"
           placeholder="Aggiungi luogo"
           value={city}
-          onChange={(e) => setCity(e.target.value)}
+          ref={inputRef}
+          onChange={handleInputChange}
         />
         {suggestions && suggestions.length > 0 && (
           <div className="absolute left-0 top-full mt-1 w-full bg-white border shadow-md z-10">

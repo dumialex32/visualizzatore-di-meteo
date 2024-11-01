@@ -4,6 +4,8 @@ import DailyTab from "./DailyTab";
 import HourlyWeatherDataRow from "./HourlyWeatherDataRow";
 import { WeatherCodeInterpretation } from "../types/weatherDataTypes";
 import weatherCodeInterpretationData from "../data/weatherCodeInterpretation.json";
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
+import { ROWS_PER_PAGE } from "../variables";
 
 const timeMap: Record<number, "day" | "night"> = {
   0: "night",
@@ -25,6 +27,8 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
   weatherData,
 }) => {
   const [activeTab, setActiveTab] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const rowsPerPage = ROWS_PER_PAGE;
 
   const units = {
     humidityUnit: weatherData?.hourly_units.relative_humidity_2m,
@@ -42,6 +46,7 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
     return weatherCodeInterpretation[code][dayTime];
   };
 
+  // manipolare la meteo data
   const getTabHourlyData = () => {
     const currentTabDate = weatherData?.daily.time[activeTab];
     if (!currentTabDate) return [];
@@ -65,7 +70,22 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
       .filter((d) => d.time.startsWith(currentTabDate));
   };
 
+  // paginazione
   const tabHourlyData = getTabHourlyData();
+
+  const handleNextPage = () => {
+    if (currentPage * rowsPerPage < tabHourlyData.length)
+      setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const tabPaginatedHourlyData = tabHourlyData.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  );
 
   return (
     <div>
@@ -82,8 +102,9 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
           );
         })}
       </ul>
-      {/* le collone della tabella */}
-      <div className="flex flex-col gap-4 p-4">
+
+      <div className="flex flex-col p-4">
+        {/* le collone della tabella */}
         <div className="grid grid-cols-5 shadow-md p-2">
           {columns.map((c) => (
             <div key={c} className="font-semibold">
@@ -94,10 +115,41 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
 
         {/* corpo della tabella */}
         <div className="border rounded-md">
-          {tabHourlyData.map((d, i) => {
+          {tabPaginatedHourlyData.map((d, i) => {
             return <HourlyWeatherDataRow key={i} tabHourlyData={d} />;
           })}
         </div>
+
+        {/* pie di tabella*/}
+
+        <div className="flex justify-center shadow-md p-2">
+          <div className="flex gap-4">
+            <button disabled={currentPage === 1} onClick={handlePreviousPage}>
+              <KeyboardArrowLeft
+                sx={{ color: `${currentPage === 1 && "#cbd5e1"}` }}
+              />
+            </button>
+            <button
+              disabled={currentPage === tabHourlyData.length}
+              onClick={handleNextPage}
+            >
+              <KeyboardArrowRight
+                sx={{
+                  color: `${
+                    currentPage * rowsPerPage > tabHourlyData.length - 1 &&
+                    "#cbd5e1"
+                  }`,
+                }}
+              />
+            </button>
+
+            <div>
+              {currentPage} of {Math.ceil(tabHourlyData.length / rowsPerPage)}
+            </div>
+          </div>
+        </div>
+
+        <></>
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index={true} element={<HomeScreen />} />
-      <Route path="/meteo/:lat/:lon" element={<CityWeatherScreen />} />
+      <Route path="/meteo/:city" element={<CityWeatherScreen />} />
       <Route path="/fav-cities" element={<FavCittiesWeatherScreen />} />
     </Route>
   )

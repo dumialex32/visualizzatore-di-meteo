@@ -7,21 +7,22 @@ const useWeather = (lat: string, lon: string) => {
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const getWeather = useCallback(async () => {
-    if (!lat || !lon) throw new Error("Coords not provided");
-
     try {
+      if (!lat || !lon) throw new Error("Coords not provided");
+
       setIsLoading(true);
       const data = await getCityWeatherApi(lat, lon);
       setWeatherData(data);
     } catch (err: any) {
-      setError(err);
+      console.error(err);
+      setError(err.message || "An error occurred");
     } finally {
       setIsLoading(false);
     }
   }, [lat, lon]);
   useEffect(() => {
     getWeather();
-  }, [getWeather]);
+  }, [getWeather, lat, lon]);
 
   return { weatherData, error, isLoading };
 };

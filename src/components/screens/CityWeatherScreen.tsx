@@ -3,15 +3,45 @@ import Loader from "../Loader";
 import WeatherTable from "../WeatherTable";
 import useWeather from "../../hooks/useWeather";
 import AlertType from "../AlertType";
+import StarIcon from "@mui/icons-material/Star";
+import { createToast } from "../../utils/Toast";
+import { useEffect, useState, useCallback } from "react";
+import useFavoriteCities from "../../hooks/useFavoriteCities";
+import FavoriteButton from "../FavoriteButton";
+import { FavoriteCity } from "../../types/favoriteCityTypes";
 
 const CityWeatherScreen: React.FC = () => {
   const location = useLocation();
   const { city } = useParams();
   const [lat, lon] = location.state;
-
   const { weatherData, isLoading, error } = useWeather(lat, lon);
+  const { favoriteCities, addCity, removeCity } = useFavoriteCities();
+  console.log(favoriteCities);
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
-  console.log(weatherData);
+  useEffect(() => {
+    setIsFavorite(favoriteCities.some((i: FavoriteCity) => i.city === city));
+  }, [city, favoriteCities]);
+
+  const addToFavorite = useCallback(() => {
+    if (isFavorite) {
+      createToast({
+        type: "warn",
+        message: "Città già presente nei preferiti!",
+      });
+      return;
+    }
+    const favoriteCity: FavoriteCity = { city, coords: [lat, lon] };
+    addCity(favoriteCity);
+    console.log(favoriteCity);
+    createToast({ type: "success", message: "Città aggiunta ai preferiti" });
+  }, [isFavorite, city, lat, lon, addCity]);
+
+  const removeFavorite = useCallback(() => {
+    const cityToRemove = { city, coords: [lat, lon] };
+    removeCity(cityToRemove);
+    createToast({ type: "success", message: "Città rimossa dai preferiti!" });
+  }, [city, lat, lon, removeCity]);
 
   if (isLoading && !error) return <Loader />;
   if (error && !isLoading) return <AlertType type="error" message={error} />;
@@ -19,9 +49,21 @@ const CityWeatherScreen: React.FC = () => {
 
   return (
     <div>
-      <h2 className="text-2xl p-2 mb-5 uppercase">
-        Meteo {city} - Previsioni per 7 giorni
-      </h2>
+      <div className="relative flex items-center justify-between gap-1 mb-6 p-2">
+        <h2 className="text-2xl uppercase">
+          Meteo {city} - Previsioni per 7 giorni
+        </h2>
+        {isFavorite && (
+          <div className="absolute -left-5">
+            <StarIcon sx={{ color: "orange" }} />
+          </div>
+        )}
+        <FavoriteButton
+          isFavorite={isFavorite}
+          onAdd={addToFavorite}
+          onRemove={removeFavorite}
+        />
+      </div>
 
       <WeatherTable weatherData={weatherData} />
     </div>

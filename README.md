@@ -1,50 +1,6 @@
-# React + TypeScript + Vite
+# Visualizzatore di Meteo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Questa applicazione permette di visualizzare e monitorare le condizioni meteo di diverse città in modo intuitivo. Gli utenti possono cercare qualsiasi città e vedere informazioni meteo dettagliate, tra cui temperatura, condizioni atmosferiche, umidità e velocità del vento, tramite l'API di Open Meteo. È possibile aggiungere le città cercate alla lista dei preferiti, che viene salvata in LocalStorage per garantirne la persistenza anche dopo il riavvio della pagina.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+La lista dei preferiti consente di visualizzare le informazioni meteo aggiornate per ogni città salvata. L'applicazione include anche un grafico delle previsioni delle temperature per le prossime 24 ore e la possibilità di ordinare le città preferite in base alla temperatura.
+git

@@ -23,9 +23,7 @@ export const getCityWeatherApi = async (lat: string, lon: string) => {
         throw err.message;
       }
     } else {
-      throw `Error: ${
-        err instanceof Error ? err.message : "An unknown error occurred"
-      }`;
+      throw err instanceof Error ? err.message : "An unknown error occurred";
     }
   }
 };

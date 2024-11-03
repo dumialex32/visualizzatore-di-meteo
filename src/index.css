@@ -12,4 +12,8 @@
   .btn {
     @apply px-3 py-2 rounded-md bg-main-color text-white;
   }
+
+  .secondary {
+    @apply px-3 py-2 rounded-md bg-gray-500 text-white;
+  }
 }

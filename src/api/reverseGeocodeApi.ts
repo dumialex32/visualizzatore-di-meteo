@@ -1,14 +1,11 @@
 import axios, { isAxiosError } from "axios";
 
-export const cityAutoCompleteApi = async (city: string) => {
-  if (!city.trim()) return;
-
+export const getLocationByCoords = async (lat: number, lon: number) => {
   try {
     const res = await axios.get(
-      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-        city
-      )}&format=json&addressdetails=1&limit=5`
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
     );
+
     return res.data;
   } catch (err) {
     if (isAxiosError(err)) {

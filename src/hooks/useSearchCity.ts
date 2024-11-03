@@ -14,35 +14,33 @@ const useSearchCity = () => {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [city, setCity] = useState<string>("");
-  const [selectedCityCoords, setSelectedCityCoords] = useState<
-    [lat: string, lon: string] | []
-  >([]);
+  const [selectedCityCoords, setSelectedCityCoords] = useState<{
+    lat: string;
+    lon: string;
+  } | null>(null);
   const [suggestions, setSuggestions] = useState<Suggestions[]>([]);
   const [error, setError] = useState<string>("");
-  const [lat, lon] = selectedCityCoords;
-
-  console.log(suggestions);
-  console.log(city);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCity(e.target.value);
-    setSelectedCityCoords([]);
+    setSelectedCityCoords(null);
   };
 
   const searchCity = useCallback(async () => {
-    if (selectedCityCoords.length > 0) return;
+    if (selectedCityCoords) return;
     try {
       const data = await cityAutoCompleteApi(city);
       setSuggestions(data);
     } catch (err) {
       setError(err as string);
     }
-  }, [city, selectedCityCoords.length]);
+  }, [city, selectedCityCoords]);
 
   const handleSelectedCity = (
     selectedCity: string,
-    coords: [lat: string, lng: string]
+    coords: { lat: string; lon: string }
   ) => {
+    console.log(coords);
     setCity(selectedCity);
     setSuggestions([]);
     setSelectedCityCoords(coords);
@@ -52,14 +50,14 @@ const useSearchCity = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!lat || !lon) {
+    if (!selectedCityCoords) {
       console.error("Latitude or Longitude is undefined");
       return;
     }
 
     navigate(`/meteo/${city}`, { state: selectedCityCoords });
     setCity("");
-    setSelectedCityCoords([]);
+    setSelectedCityCoords(null);
     inputRef.current?.blur();
   };
 

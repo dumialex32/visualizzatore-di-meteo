@@ -1,4 +1,4 @@
 export interface FavoriteCity {
   city: string;
-  coords: [string, string];
+  coords: { lat: string; lon: string };
 }

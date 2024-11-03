@@ -6,6 +6,7 @@ const useWeather = (lat: string, lon: string) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const getWeather = useCallback(async () => {
     try {
       if (!lat || !lon) throw new Error("Coords not provided");

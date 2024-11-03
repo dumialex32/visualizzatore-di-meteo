@@ -8,16 +8,16 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import FavCittiesWeatherScreen from "./components/screens/FavCittiesWeatherScreen.tsx";
 import CityWeatherScreen from "./components/screens/CityWeatherScreen.tsx";
 import HomeScreen from "./components/screens/HomeScreen.tsx";
+import FavoriteCittiesScreen from "./components/screens/FavoriteCittiesScreen.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index={true} element={<HomeScreen />} />
       <Route path="/meteo/:city" element={<CityWeatherScreen />} />
-      <Route path="/fav-cities" element={<FavCittiesWeatherScreen />} />
+      <Route path="/fav-cities" element={<FavoriteCittiesScreen />} />
     </Route>
   )
 );

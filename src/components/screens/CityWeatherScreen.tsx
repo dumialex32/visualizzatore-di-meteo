@@ -34,7 +34,12 @@ const CityWeatherScreen: React.FC = () => {
       });
       return;
     }
-    const favoriteCity: FavoriteCity = { city, coords: { lat, lon } };
+    const favoriteCity: FavoriteCity = {
+      city,
+      coords: { lat, lon },
+      daily: weatherData?.daily,
+      units: weatherData?.daily_units,
+    };
     addCity(favoriteCity);
     createToast({ type: "success", message: "Città aggiunta ai preferiti" });
   };

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { TabHourlyData, WeatherData } from "../../types/weatherDataTypes";
 import DailyTab from "./DailyTab";
 import HourlyWeatherDataRow from "./HourlyWeatherDataRow";
@@ -8,8 +8,9 @@ import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { ROWS_PER_PAGE } from "../../variables";
 import WeatherGraph from "./WeatherGraph";
 import dayjs from "dayjs";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+
+import SortButtons from "../SortButtons";
+import useSort from "../../hooks/useSort";
 
 const timeMap: Record<number, "day" | "night"> = {
   0: "night",
@@ -33,7 +34,7 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
   const [activeTab, setActiveTab] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const rowsPerPage = ROWS_PER_PAGE;
-  const [sortDirection, setSortDirection] = useState<"desc" | "asc">("desc");
+  // const [sortDirection, setSortDirection] = useState<"desc" | "asc">("desc");
 
   const units = {
     humidityUnit: weatherData?.hourly_units.relative_humidity_2m,
@@ -79,29 +80,20 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
 
   const tabHourlyData: TabHourlyData[] = getTabHourlyData();
 
+  // ordinamento
+  const {
+    sortDirection,
+    sortedData: sortedTabHourlyData,
+    handleSortDirectionAsc,
+    handleSortDirectionDesc,
+  } = useSort(tabHourlyData, "temperature");
+
   // crea l'oggeto contenente i dati meteo per 24 ore necessario al grafico
   const graphData = tabHourlyData.map((data) => ({
     ...data,
     time: dayjs(data.time).format("HH:mm"),
     day: data.time,
   }));
-
-  // ordinamento
-  const handleSortAsc = () => {
-    setSortDirection("asc");
-  };
-
-  const handleSortDesc = () => {
-    setSortDirection("desc");
-  };
-
-  const sortedTabHourlyData = useMemo(() => {
-    return [...tabHourlyData].sort((a, b) =>
-      sortDirection === "asc"
-        ? a.temperature - b.temperature
-        : b.temperature - a.temperature
-    );
-  }, [sortDirection, tabHourlyData]);
 
   // paginazione
   const handleNextPage = () => {
@@ -142,17 +134,11 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
               <div key={c} className="font-semibold flex">
                 {c}
                 {c === "Temperatura" && (
-                  <div>
-                    {sortDirection === "asc" ? (
-                      <button onClick={handleSortDesc}>
-                        <ArrowDropDownIcon />
-                      </button>
-                    ) : (
-                      <button onClick={handleSortAsc}>
-                        <ArrowDropUpIcon />
-                      </button>
-                    )}
-                  </div>
+                  <SortButtons
+                    sortDirection={sortDirection}
+                    onHandleSortAsc={handleSortDirectionAsc}
+                    onHandleSortDesc={handleSortDirectionDesc}
+                  />
                 )}
               </div>
             );

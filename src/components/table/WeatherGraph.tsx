@@ -18,7 +18,7 @@ interface WeatherGraphProps {
 }
 
 // pannello personalizzato per il grafico
-const CustomTooltip: React.FC<any> = ({ active, payload, label }) => {
+const CustomTooltip: React.FC<any> = ({ active, payload }) => {
   if (active && payload && payload.length) {
     // console.log(payload);
     const formattedDate = dayjs(payload[0].payload.day).format("DD MMM");

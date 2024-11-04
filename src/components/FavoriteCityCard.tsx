@@ -11,11 +11,33 @@ const FavoriteCityCard: React.FC<FavoriteCityCardProps> = ({
   onRemoveCity,
 }) => {
   const navigate = useNavigate();
+  const {
+    units: { temperature_2m_max, temperature_2m_min },
+  } = favoriteCity;
+
   return (
-    <div className="flex flex-col items-center gap-4 shadow-md px-2 py-4">
-      <h1 className="text-2xl text-main-color font-semibold ">
+    <div className="flex flex-col gap-4 shadow-md px-4 py-4">
+      <h2 className="text-2xl text-main-color overflow-hidden whitespace-nowrap text-ellipsis">
         {favoriteCity.city}
-      </h1>
+      </h2>
+
+      <div className="flex flex-col gap-1">
+        <div className="grid grid-cols-2 gap-2 ">
+          <p>Max:</p>
+          <p className="font-semibold">
+            {favoriteCity.maxDailyTemp}
+            {temperature_2m_max}
+          </p>
+        </div>
+        <div className="grid grid-cols-2 gap-2 ">
+          <p>Min:</p>
+          <p className="font-semibold">
+            {favoriteCity.minDailyTemp}
+            {temperature_2m_min}
+          </p>
+        </div>
+      </div>
+
       <button
         className="btn"
         onClick={() =>
@@ -24,7 +46,7 @@ const FavoriteCityCard: React.FC<FavoriteCityCardProps> = ({
           })
         }
       >
-        Vizzualiza dati meteo
+        Vizzualiza detagli
       </button>
       <button
         className="btn btn secondary"

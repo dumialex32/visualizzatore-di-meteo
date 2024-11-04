@@ -1,14 +1,14 @@
 const FavoriteButton: React.FC<{
   isFavorite: boolean;
-  onAdd: () => void;
-  onRemove: () => void;
-}> = ({ isFavorite, onAdd, onRemove }) => {
+  onAddFavorite: () => void;
+  onRemoveFavorite: () => void;
+}> = ({ isFavorite, onAddFavorite, onRemoveFavorite }) => {
   return isFavorite ? (
-    <button className="btn" onClick={onRemove}>
+    <button className="btn" onClick={onRemoveFavorite}>
       Rimuovi dai preferiti
     </button>
   ) : (
-    <button className="btn" onClick={onAdd}>
+    <button className="btn" onClick={onAddFavorite}>
       Aggiungi ai preferiti
     </button>
   );

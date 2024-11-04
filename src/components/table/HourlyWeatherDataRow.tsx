@@ -1,7 +1,7 @@
-import { formatTime } from "../utils/formatters";
+import { formatTime } from "../../utils/formatters";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AirIcon from "@mui/icons-material/Air";
-import { TabHourlyData } from "../types/weatherDataTypes";
+import { TabHourlyData } from "../../types/weatherDataTypes";
 
 const tableHourlyDataRow: React.FC<{
   tabHourlyData: TabHourlyData;

@@ -1,11 +1,15 @@
-import { useState } from "react";
-import { WeatherData } from "../types/weatherDataTypes";
+import { useMemo, useState } from "react";
+import { TabHourlyData, WeatherData } from "../../types/weatherDataTypes";
 import DailyTab from "./DailyTab";
 import HourlyWeatherDataRow from "./HourlyWeatherDataRow";
-import { WeatherCodeInterpretation } from "../types/weatherDataTypes";
-import weatherCodeInterpretationData from "../data/weatherCodeInterpretation.json";
+import { WeatherCodeInterpretation } from "../../types/weatherDataTypes";
+import weatherCodeInterpretationData from "../../data/weatherCodeInterpretation.json";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
-import { ROWS_PER_PAGE } from "../variables";
+import { ROWS_PER_PAGE } from "../../variables";
+import WeatherGraph from "./WeatherGraph";
+import dayjs from "dayjs";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 const timeMap: Record<number, "day" | "night"> = {
   0: "night",
@@ -29,6 +33,7 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
   const [activeTab, setActiveTab] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const rowsPerPage = ROWS_PER_PAGE;
+  const [sortDirection, setSortDirection] = useState<"desc" | "asc">("desc");
 
   const units = {
     humidityUnit: weatherData?.hourly_units.relative_humidity_2m,
@@ -38,15 +43,17 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
 
   const handleActiveTab = (i: number) => {
     setActiveTab(i);
+    setCurrentPage(1);
   };
 
+  // funzione per ottenere la descrizione per ogni codice meteo WMO
   const getWeatherCodeInterpretation = (code: number, time: number) => {
     const dayTime = timeMap[time];
 
     return weatherCodeInterpretation[code][dayTime];
   };
 
-  // manipolare la meteo data
+  // funzione per creare l'oggetto contente i dati meteo giornaglieri per 24h
   const getTabHourlyData = () => {
     const currentTabDate = weatherData?.daily.time[activeTab];
     if (!currentTabDate) return [];
@@ -70,11 +77,35 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
       .filter((d) => d.time.startsWith(currentTabDate));
   };
 
-  // paginazione
-  const tabHourlyData = getTabHourlyData();
+  const tabHourlyData: TabHourlyData[] = getTabHourlyData();
 
+  // crea l'oggeto contenente i dati meteo per 24 ore necessario al grafico
+  const graphData = tabHourlyData.map((data) => ({
+    ...data,
+    time: dayjs(data.time).format("HH:mm"),
+    day: data.time,
+  }));
+
+  // ordinamento
+  const handleSortAsc = () => {
+    setSortDirection("asc");
+  };
+
+  const handleSortDesc = () => {
+    setSortDirection("desc");
+  };
+
+  const sortedTabHourlyData = useMemo(() => {
+    return [...tabHourlyData].sort((a, b) =>
+      sortDirection === "asc"
+        ? a.temperature - b.temperature
+        : b.temperature - a.temperature
+    );
+  }, [sortDirection, tabHourlyData]);
+
+  // paginazione
   const handleNextPage = () => {
-    if (currentPage * rowsPerPage < tabHourlyData.length)
+    if (currentPage * rowsPerPage < sortedTabHourlyData.length)
       setCurrentPage(currentPage + 1);
   };
 
@@ -82,7 +113,7 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  const tabPaginatedHourlyData = tabHourlyData.slice(
+  const tabPaginatedHourlyData = sortedTabHourlyData.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   );
@@ -106,11 +137,26 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
       <div className="flex flex-col p-4">
         {/* le collone della tabella */}
         <div className="grid grid-cols-5 shadow-md p-2">
-          {columns.map((c) => (
-            <div key={c} className="font-semibold">
-              {c}
-            </div>
-          ))}
+          {columns.map((c) => {
+            return (
+              <div key={c} className="font-semibold flex">
+                {c}
+                {c === "Temperatura" && (
+                  <div>
+                    {sortDirection === "asc" ? (
+                      <button onClick={handleSortDesc}>
+                        <ArrowDropDownIcon />
+                      </button>
+                    ) : (
+                      <button onClick={handleSortAsc}>
+                        <ArrowDropUpIcon />
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* corpo della tabella */}
@@ -121,7 +167,6 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
         </div>
 
         {/* pie di tabella*/}
-
         <div className="flex justify-center shadow-md p-2">
           <div className="flex gap-4">
             <button disabled={currentPage === 1} onClick={handlePreviousPage}>
@@ -148,9 +193,10 @@ const WeatherTable: React.FC<{ weatherData: WeatherData }> = ({
             </div>
           </div>
         </div>
-
-        <></>
       </div>
+
+      {/* grafico per visualizzare i dati meteo delle prossime 24 ore per ogni giorno dei prossimi 7 giorni */}
+      <WeatherGraph graphData={graphData} />
     </div>
   );
 };

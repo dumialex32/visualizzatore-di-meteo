@@ -52,7 +52,7 @@ export interface TabHourlyData {
   };
 }
 
-// weatuerCodeInterpretation
+// weatherCodeInterpretation
 interface DayNightDescription {
   description: string;
   image: string;

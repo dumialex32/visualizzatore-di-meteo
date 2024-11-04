@@ -1,4 +1,4 @@
-import { formatDate } from "../utils/formatters";
+import { formatDate } from "../../utils/formatters";
 
 const DailyTab: React.FC<{
   date: string;
@@ -7,8 +7,10 @@ const DailyTab: React.FC<{
 }> = ({ date, onClick, isActive }) => {
   return (
     <li
-      className={`cursor-pointer p-2 bg-orange-50 rounded-md text-center font-semibold ${
-        isActive ? "bg-orange-300" : ""
+      className={`cursor-pointer p-2 rounded-md text-center font-semibold transition-all duration-300 ${
+        isActive
+          ? "bg-main-color text-white"
+          : "bg-orange-100 hover:bg-main-color hover:text-white"
       }`}
       onClick={onClick}
     >

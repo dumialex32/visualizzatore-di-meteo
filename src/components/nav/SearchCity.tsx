@@ -1,6 +1,6 @@
 import SearchIcon from "@mui/icons-material/Search";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
-import useSearchCity from "../hooks/useSearchCity";
+import useSearchCity from "../../hooks/useSearchCity";
 
 const SearchCity: React.FC = () => {
   const {

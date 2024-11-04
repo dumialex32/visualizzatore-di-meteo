@@ -1,11 +1,11 @@
 import { useLocation, useParams } from "react-router-dom";
 import Loader from "../Loader";
-import WeatherTable from "../WeatherTable";
+import WeatherTable from "../table/WeatherTable";
 import useWeather from "../../hooks/useWeather";
 import AlertType from "../AlertType";
 import StarIcon from "@mui/icons-material/Star";
 import { createToast } from "../../utils/toast";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import useFavoriteCities from "../../hooks/useFavoriteCities";
 import FavoriteButton from "../FavoriteButton";
 import { FavoriteCity } from "../../types/favoriteCityTypes";
@@ -17,12 +17,14 @@ const CityWeatherScreen: React.FC = () => {
   const { weatherData, isLoading, error } = useWeather(lat, lon);
   const { favoriteCities, addCity, removeCity } = useFavoriteCities();
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  console.log(weatherData);
 
   useEffect(() => {
     setIsFavorite(favoriteCities.some((i: FavoriteCity) => i.city === city));
   }, [city, favoriteCities]);
 
-  const addToFavorite = useCallback(() => {
+  // aggiungi citta ai preferiti
+  const handleAddToFavorite = () => {
     if (!city || !lat || !lon) return;
 
     if (isFavorite) {
@@ -35,15 +37,16 @@ const CityWeatherScreen: React.FC = () => {
     const favoriteCity: FavoriteCity = { city, coords: { lat, lon } };
     addCity(favoriteCity);
     createToast({ type: "success", message: "Città aggiunta ai preferiti" });
-  }, [isFavorite, city, lat, lon, addCity]);
+  };
 
-  const removeFavorite = useCallback(() => {
+  // rimuovi citta dai preferiti
+  const handleRemoveFromFavorite = () => {
     if (!city || !lat || !lon) return;
 
     const cityToRemove: FavoriteCity = { city, coords: { lat, lon } };
     removeCity(cityToRemove);
     createToast({ type: "success", message: "Città rimossa dai preferiti!" });
-  }, [city, lat, lon, removeCity]);
+  };
 
   if (isLoading && !error) return <Loader />;
   if (error && !isLoading) return <AlertType type="error" message={error} />;
@@ -52,7 +55,7 @@ const CityWeatherScreen: React.FC = () => {
   return (
     <div>
       <div className="relative flex items-center justify-between gap-1 mb-6 p-2">
-        <h2 className="text-2xl uppercase">
+        <h2 className="text-2xl uppercase font-semibold">
           Meteo {city} - Previsioni per 7 giorni
         </h2>
         {isFavorite && (
@@ -62,11 +65,12 @@ const CityWeatherScreen: React.FC = () => {
         )}
         <FavoriteButton
           isFavorite={isFavorite}
-          onAdd={addToFavorite}
-          onRemove={removeFavorite}
+          onAddFavorite={handleAddToFavorite}
+          onRemoveFavorite={handleRemoveFromFavorite}
         />
       </div>
 
+      {/* tabella per visualizzare i dati meteo */}
       <WeatherTable weatherData={weatherData} />
     </div>
   );

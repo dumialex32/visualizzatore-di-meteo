@@ -12,8 +12,6 @@ const HomeScreen: React.FC = () => {
 
   const { city, error: reverseGeocodeError } = useReverseGeocode(lat, lon);
 
-  console.log(city);
-
   const handleCurrentLocationWeather = () => {
     navigate(`/meteo/${city}`, { state: { lat, lon } });
   };

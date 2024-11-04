@@ -3,8 +3,7 @@ import AlertType from "../AlertType";
 import FavoriteCityCard from "../FavoriteCityCard";
 
 const FavoriteCittiesScreen: React.FC = () => {
-  const { favoriteCities, removeCity } = useFavoriteCities();
-  console.log(favoriteCities);
+  const { favoriteCities, removeCity, removeAllCities } = useFavoriteCities();
 
   if (!favoriteCities || favoriteCities.length === 0)
     return (
@@ -17,7 +16,11 @@ const FavoriteCittiesScreen: React.FC = () => {
   return (
     <div>
       <div className="relative flex items-center justify-between gap-1 mb-6 p-2">
-        <h2 className="text-2xl uppercase">Città favorite</h2>
+        <h2 className="text-2xl uppercase font-semibold">Città favorite</h2>
+
+        <button className="btn secondary" onClick={removeAllCities}>
+          Rimuovi tutte le citta
+        </button>
       </div>
 
       <ul className="grid grid-cols-6 gap-2">

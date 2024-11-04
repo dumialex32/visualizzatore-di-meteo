@@ -12,7 +12,6 @@ const useFavoriteCities = () => {
   );
 
   const addCity = (city: FavoriteCity) => {
-    console.log(city);
     const updatedCities = [...favoriteCities, city];
     setLocalStorageItem("favoriteCities", updatedCities);
     setFavoriteCities(updatedCities);
@@ -21,15 +20,24 @@ const useFavoriteCities = () => {
   const removeCity = (city: FavoriteCity) => {
     const updatedCities = favoriteCities.filter((c) => c.city !== city.city);
 
-    console.log(updatedCities);
-    setLocalStorageItem("favoriteCities", updatedCities);
+    if (updatedCities.length === 0) {
+      localStorage.removeItem("favoriteCities");
+    } else {
+      setLocalStorageItem("favoriteCities", updatedCities);
+    }
     setFavoriteCities(updatedCities);
+  };
+
+  const removeAllCities = () => {
+    localStorage.clear();
+    setFavoriteCities([]);
   };
 
   return {
     favoriteCities,
     addCity,
     removeCity,
+    removeAllCities,
   };
 };
 

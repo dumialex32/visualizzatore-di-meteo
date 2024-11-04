@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { cityAutoCompleteApi } from "../api/cityAutocompleteApi";
-
 import { Suggestions } from "../types/suggestionsTypes";
 
 const useSearchCity = () => {
@@ -40,7 +39,6 @@ const useSearchCity = () => {
     selectedCity: string,
     coords: { lat: string; lon: string }
   ) => {
-    console.log(coords);
     setCity(selectedCity);
     setSuggestions([]);
     setSelectedCityCoords(coords);

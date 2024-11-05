@@ -3,8 +3,8 @@ import {
   getLocalStorageItem,
   setLocalStorageItem,
 } from "../utils/localStorage";
-// import { isEqual } from "../utils/general";
-import { FavoriteCity } from "../types/favoriteCityTypes";
+
+import { FavoriteCityToRemove, FavoriteCity } from "../types/favoriteCityTypes";
 
 const useFavoriteCities = () => {
   const [favoriteCities, setFavoriteCities] = useState<FavoriteCity[]>(() =>
@@ -17,8 +17,8 @@ const useFavoriteCities = () => {
     setFavoriteCities(updatedCities);
   };
 
-  const removeCity = (city: FavoriteCity) => {
-    const updatedCities = favoriteCities.filter((c) => c.city !== city.city);
+  const favoriteCityToRemove = (city: FavoriteCityToRemove) => {
+    const updatedCities = favoriteCities.filter((c) => c.city !== city);
 
     if (updatedCities.length === 0) {
       localStorage.removeItem("favoriteCities");
@@ -36,7 +36,7 @@ const useFavoriteCities = () => {
   return {
     favoriteCities,
     addCity,
-    removeCity,
+    favoriteCityToRemove,
     removeAllCities,
   };
 };

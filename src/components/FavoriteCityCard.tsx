@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { FavoriteCity } from "../types/favoriteCityTypes";
+import {
+  FavoriteCityToRemove,
+  FavoriteDailyData,
+} from "../types/favoriteCityTypes";
 
 interface FavoriteCityCardProps {
-  favoriteCity: FavoriteCity;
-  onRemoveCity: (favoriteCity: FavoriteCity) => void;
+  favoriteCity: FavoriteDailyData;
+  onRemoveCity: (favoriteCity: FavoriteCityToRemove) => void;
 }
 
 const FavoriteCityCard: React.FC<FavoriteCityCardProps> = ({
@@ -50,7 +53,7 @@ const FavoriteCityCard: React.FC<FavoriteCityCardProps> = ({
       </button>
       <button
         className="btn btn secondary"
-        onClick={() => onRemoveCity(favoriteCity)}
+        onClick={() => onRemoveCity(favoriteCity.city)}
       >
         Rimuovi dai favoriti
       </button>

@@ -3,15 +3,17 @@ import AlertType from "../AlertType";
 import FavoriteCityCard from "../FavoriteCityCard";
 import SortButtons from "../SortButtons";
 import useSort from "../../hooks/useSort";
+import { FavoriteDailyData } from "../../types/favoriteCityTypes";
 
 const FavoriteCittiesScreen: React.FC = () => {
-  const { favoriteCities, removeCity, removeAllCities } = useFavoriteCities();
+  const { favoriteCities, favoriteCityToRemove, removeAllCities } =
+    useFavoriteCities();
 
-  // prendiamo la data di oggi in formato iso8601 per mapare la la temp min e temp max di oggi
+  // ottieni la data di oggi in formato ISO 8601 per mappare la temperatura minima e massima di oggi
   const today = new Date().toISOString().split("T")[0];
 
-  // crea un oggetto con 2 nuove propieta max temp e min temp
-  const dailyTemps = favoriteCities.map((fc) => {
+  // crea un array di oggetti che include maxTemp e minTemp di oggi per ogni citta preferita
+  const favoriteDailyData: FavoriteDailyData[] = favoriteCities.map((fc) => {
     const cardTimeIndex = fc.daily.time.indexOf(today);
 
     const maxDailyTemp = fc.daily.temperature_2m_max[cardTimeIndex];
@@ -20,12 +22,13 @@ const FavoriteCittiesScreen: React.FC = () => {
     return { ...fc, maxDailyTemp, minDailyTemp };
   });
 
+  // ordina le citta preferite in base alla temperatura massima di oggi
   const {
     sortDirection,
     sortedData: sortedFavoriteCities,
     handleSortDirectionAsc,
     handleSortDirectionDesc,
-  } = useSort(dailyTemps, "maxDailyTemp");
+  } = useSort(favoriteDailyData, "maxDailyTemp");
 
   if (!favoriteCities || favoriteCities.length === 0)
     return (
@@ -59,7 +62,7 @@ const FavoriteCittiesScreen: React.FC = () => {
               <FavoriteCityCard
                 key={i}
                 favoriteCity={fc}
-                onRemoveCity={removeCity}
+                onRemoveCity={favoriteCityToRemove}
               />
             );
           })}

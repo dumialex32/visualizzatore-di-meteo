@@ -1,7 +1,7 @@
 {
   "name": "visualizzatore-di-meteo",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,6 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "author": "Dumitras Alexandru",
+  "license": "GPL-3.0",
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",

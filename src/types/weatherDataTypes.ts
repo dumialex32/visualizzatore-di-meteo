@@ -30,15 +30,18 @@ interface HourlyData {
   is_day: number[];
 }
 
-interface DailyUnits {
+export interface DailyUnits {
   time: string;
+  temperature_2m_max: string;
+  temperature_2m_min: string;
 }
 
-interface DailyData {
+export interface DailyData {
   time: string[];
+  temperature_2m_max: number[];
+  temperature_2m_min: number[];
 }
 
-// tab hourly data
 export interface TabHourlyData {
   time: string;
   temperature: number;
@@ -53,7 +56,7 @@ export interface TabHourlyData {
 }
 
 // weatherCodeInterpretation
-interface DayNightDescription {
+export interface DayNightDescription {
   description: string;
   image: string;
 }

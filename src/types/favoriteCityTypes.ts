@@ -1,20 +1,22 @@
-interface Daily {
-  time: string[];
-  temperature_2m_max: number[];
-  temperature_2m_min: number[];
-}
-
-interface Units {
-  temperature_2m_max: string;
-  temperature_2m_min: string;
-  time: string;
-}
+import { DailyData, DailyUnits } from "./weatherDataTypes";
 
 export interface FavoriteCity {
   city: string;
   coords: { lat: string; lon: string };
-  daily: Daily;
-  units: Units;
+  daily: DailyData;
+  units: DailyUnits;
+}
+
+export type FavoriteCityToRemove = string;
+
+export interface FavoriteDailyData {
   maxDailyTemp: number;
   minDailyTemp: number;
+  city: string;
+  coords: {
+    lat: string;
+    lon: string;
+  };
+  daily: DailyData;
+  units: DailyUnits;
 }

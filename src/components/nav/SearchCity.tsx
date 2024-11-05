@@ -1,6 +1,7 @@
 import SearchIcon from "@mui/icons-material/Search";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
 import useSearchCity from "../../hooks/useSearchCity";
+import AlertType from "../AlertType";
 
 const SearchCity: React.FC = () => {
   const {
@@ -30,23 +31,30 @@ const SearchCity: React.FC = () => {
           ref={inputRef}
           onChange={handleInputChange}
         />
+        {/* se ci sono suggerimenti, e nessun errore, visualizza un menu a discesa con i suggerimenti */}
         {suggestions && suggestions.length > 0 && (
           <div className="absolute left-0 top-full mt-1 w-full bg-white border shadow-md z-10">
-            {suggestions.map((s, i) => (
-              <div
-                key={i}
-                className="px-2 py-1 hover:bg-gray-200 cursor-pointer"
-                onClick={() =>
-                  handleSelectedCity(s.name, { lat: s.lat, lon: s.lon })
-                }
-              >
-                {s.display_name}
-              </div>
-            ))}
+            {error ? (
+              <AlertType
+                type="error"
+                message={error || "Recupero suggerimenti fallito"}
+              />
+            ) : (
+              suggestions.map((s, i) => (
+                <div
+                  key={i}
+                  className="px-2 py-1 hover:bg-gray-200 cursor-pointer"
+                  onClick={() =>
+                    handleSelectedCity(s.name, { lat: s.lat, lon: s.lon })
+                  }
+                >
+                  {s.display_name}
+                </div>
+              ))
+            )}
           </div>
         )}
       </div>
-
       <button className="border-l" type="submit">
         <SearchIcon />
       </button>

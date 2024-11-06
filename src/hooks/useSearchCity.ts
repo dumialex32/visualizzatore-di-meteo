@@ -14,8 +14,8 @@ const useSearchCity = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [city, setCity] = useState<string>("");
   const [selectedCityCoords, setSelectedCityCoords] = useState<{
-    lat: string;
-    lon: string;
+    lat: number;
+    lon: number;
   } | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [suggestions, setSuggestions] = useState<Suggestions[]>([]);
@@ -45,7 +45,7 @@ const useSearchCity = () => {
   // funzione per gestire la selezione di una citta dai suggerimenti
   const handleSelectedCity = (
     selectedCity: string,
-    coords: { lat: string; lon: string }
+    coords: { lat: number; lon: number }
   ) => {
     setCity(selectedCity);
     setSuggestions([]);

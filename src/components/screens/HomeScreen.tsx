@@ -10,7 +10,6 @@ const HomeScreen: React.FC = () => {
   const { currentPosition, error: currentPositionError } = useGeolocation();
   const lat = currentPosition?.lat;
   const lon = currentPosition?.lon;
-  console.log(lat, lon);
 
   // usa il custom hook useReverseGeocode per ottenere il nome della citta a partire dalle coordinate
   const { city, error: reverseGeocodeError } = useReverseGeocode(lat, lon);

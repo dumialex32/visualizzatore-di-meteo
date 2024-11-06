@@ -10,7 +10,7 @@ const DropMenu: React.FC = () => {
           }
           to={"/fav-cities"}
         >
-          Favorite citties
+          Città preferite
         </NavLink>
       </ul>
     </div>

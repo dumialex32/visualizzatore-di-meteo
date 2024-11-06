@@ -50,7 +50,7 @@ const CityWeatherScreen: React.FC = () => {
       daily: weatherData?.daily,
       units: weatherData?.daily_units,
     };
-    console.log(favoriteCity);
+
     addCity(favoriteCity);
     createToast({ type: "success", message: "Città aggiunta ai preferiti" });
   };
@@ -60,7 +60,7 @@ const CityWeatherScreen: React.FC = () => {
     if (!city || !lat || !lon) return;
 
     const cityToRemove: FavoriteCityToRemove = city;
-    console.log(cityToRemove);
+
     favoriteCityToRemove(cityToRemove);
     createToast({ type: "success", message: "Città rimossa dai preferiti!" });
   };

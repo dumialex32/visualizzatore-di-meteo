@@ -12,14 +12,17 @@ const useReverseGeocode = (
   // funzione per ottenere il nome della citta basato sulle coordinate
   const getCityName = useCallback(async () => {
     try {
-      if (lat && lon) {
-        setIsLoading(true);
-        const data = await getLocationByCoords(lat, lon);
-        setCity(data.address.city);
-      }
+      if (!lat || !lon)
+        throw new Error(
+          "Coordinate non fornite. Assicurati di abilitare la geolocalizzazione."
+        );
+
+      setIsLoading(true);
+      const data = await getLocationByCoords(lat, lon);
+      setCity(data.address.city);
     } catch (err: any) {
       console.error(err);
-      setError(err as string);
+      setError(err.message || "Si è verificato un errore.");
     } finally {
       setIsLoading(false);
     }

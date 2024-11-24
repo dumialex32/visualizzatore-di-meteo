@@ -33,7 +33,7 @@ const HomeScreen: React.FC = () => {
             reale su temperatura, umidità, velocità del vento e condizioni
             atmosferiche, per le prossime 24 ore.
           </p>
-
+          {/* To do (returned city undefined on current loc) */}
           {!currentPositionError && !reverseGeocodeError && (
             <div className="flex flex-col gap-1">
               <p className="text-center">

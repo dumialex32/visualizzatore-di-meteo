@@ -5,9 +5,11 @@ const useReverseGeocode = (
   lat: number | undefined,
   lon: number | undefined
 ) => {
+  console.log(lat, lon);
   const [city, setCity] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  console.log(city);
 
   // funzione per ottenere il nome della citta basato sulle coordinate
   const getCityName = useCallback(async () => {
@@ -19,7 +21,8 @@ const useReverseGeocode = (
 
       setIsLoading(true);
       const data = await getLocationByCoords(lat, lon);
-      setCity(data.address.city);
+
+      setCity(data.address.town);
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Si è verificato un errore.");

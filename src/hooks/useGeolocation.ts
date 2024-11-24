@@ -6,7 +6,7 @@ const useGeolocation = () => {
     lon: number;
   }>();
   const [error, setError] = useState<string>("");
-
+  console.log(currentPosition);
   useEffect(() => {
     const options = {
       enableHighAccuracy: true,

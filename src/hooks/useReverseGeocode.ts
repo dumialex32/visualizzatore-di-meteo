@@ -21,8 +21,8 @@ const useReverseGeocode = (
 
       setIsLoading(true);
       const data = await getLocationByCoords(lat, lon);
-
-      setCity(data.address.town);
+      console.log(data);
+      setCity(data.address.city ? data.address.city : data.address.town);
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Si è verificato un errore.");
